@@ -50,6 +50,9 @@
 #include "mcc_generated_files/mccp6_compare.h"
 #include "DELAY.h"
 
+#define GREEN 1
+#define RED 2
+#define BLUE 3
 
 /*
                          Main application
@@ -57,6 +60,14 @@
 
 /******************************************************************************/
 
+uint8_t red_tab[] = {0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x4,0x4,0x4,0x4,
+                     0x4,0x4,0x4,0x4,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7};
+
+uint8_t green_tab[] = {0x4,0x4,0x4,0x4,0x4,0x4,0x4,0x4,0x7,0x7,0x7,0x7,
+                        0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7};
+
+uint8_t blue_tab[] = {0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x4,0x4,0x4,0x4,
+                     0x4,0x4,0x4,0x4,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7};
 void Delay(unsigned int msec)
 {
    while(msec > 0)
@@ -87,30 +98,72 @@ void Reset(void){ //267us reset
 }
 
 void Green(void){
-    uint32_t color = 0x20;
-    Reset();   
-    for (uint8_t i = 0; i<6; i++){
-        (color&0x20)?(Change_PWM(0x4)):(Change_PWM(0x7));
-        color = color<<1;
-    }
+    
+    Reset();
+    Change_PWM(0x4);
+    __delay_us(1);
+    Change_PWM(0x4);
+    __delay_us(1);
+    Change_PWM(0x4);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
 }
 
 void Red(void){
-    uint32_t color = 0x8;
+    
     Reset();
-    for (uint8_t i = 0; i<6; i++){
-        (color&0x20)?(Change_PWM(0x4)):(Change_PWM(0x7));
-        color=color<<1;
-    }
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x4);
+    __delay_us(1);
+    Change_PWM(0x4);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
 }
 
 void Blue(void){
-    uint32_t color = 0x3;
+    
     Reset();
-    for (uint8_t i = 0; i<6; i++){
-        (color&0x20)?(Change_PWM(0x4)):(Change_PWM(0x7));
-        color=color<<1;
-    }
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x7);
+    __delay_us(1);
+    Change_PWM(0x4);
+    __delay_us(1);
+    Change_PWM(0x4);
+    __delay_us(1);
 }
 
 void Purple(void){
@@ -158,8 +211,15 @@ int main(void)
 
     while (1)
     {
-        Test();
-        __delay_ms(500);
+        Blue();
+        Reset();
+        __delay_ms(2000);
+        Red();
+        Reset();
+        __delay_ms(2000);
+        Green();
+        Reset();
+        __delay_ms(2000);
         
     }
 

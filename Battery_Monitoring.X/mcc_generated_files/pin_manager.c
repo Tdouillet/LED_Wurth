@@ -136,7 +136,7 @@ void PIN_MANAGER_Initialize (void)
      ***************************************************************************/
     __builtin_write_OSCCONL(OSCCON & 0xbf); // unlock PPS
 
-    RPOR16bits.RP33R = 0x0014;    //RD7->MCCP6:OCM6A
+    //RPOR16bits.RP33R = 0x0014;    //RD7->MCCP6:OCM6A
 
     __builtin_write_OSCCONL(OSCCON | 0x40); // lock PPS
 }
