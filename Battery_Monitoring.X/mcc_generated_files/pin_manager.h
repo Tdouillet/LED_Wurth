@@ -16,7 +16,7 @@
     This source file provides implementations for PIN MANAGER.
     Generation Information :
         Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.4
-        Device            :  PIC24FJ256GU406
+        Device            :  PIC24FJ512GU410
     The generated drivers are tested against the following:
         Compiler          :  XC16 v2.10
         MPLAB 	          :  MPLAB X v6.05
@@ -56,13 +56,13 @@
 */
 /**
   @Summary
-    Sets the GPIO pin, RD7, high using LATD7.
+    Sets the GPIO pin, RE5, high using LATE5.
 
   @Description
-    Sets the GPIO pin, RD7, high using LATD7.
+    Sets the GPIO pin, RE5, high using LATE5.
 
   @Preconditions
-    The RD7 must be set to an output.
+    The RE5 must be set to an output.
 
   @Returns
     None.
@@ -72,21 +72,21 @@
 
   @Example
     <code>
-    // Set RD7 high (1)
+    // Set RE5 high (1)
     DATA_SetHigh();
     </code>
 
 */
-#define DATA_SetHigh()          (_LATD7 = 1)
+#define DATA_SetHigh()          (_LATE5 = 1)
 /**
   @Summary
-    Sets the GPIO pin, RD7, low using LATD7.
+    Sets the GPIO pin, RE5, low using LATE5.
 
   @Description
-    Sets the GPIO pin, RD7, low using LATD7.
+    Sets the GPIO pin, RE5, low using LATE5.
 
   @Preconditions
-    The RD7 must be set to an output.
+    The RE5 must be set to an output.
 
   @Returns
     None.
@@ -96,21 +96,21 @@
 
   @Example
     <code>
-    // Set RD7 low (0)
+    // Set RE5 low (0)
     DATA_SetLow();
     </code>
 
 */
-#define DATA_SetLow()           (_LATD7 = 0)
+#define DATA_SetLow()           (_LATE5 = 0)
 /**
   @Summary
-    Toggles the GPIO pin, RD7, using LATD7.
+    Toggles the GPIO pin, RE5, using LATE5.
 
   @Description
-    Toggles the GPIO pin, RD7, using LATD7.
+    Toggles the GPIO pin, RE5, using LATE5.
 
   @Preconditions
-    The RD7 must be set to an output.
+    The RE5 must be set to an output.
 
   @Returns
     None.
@@ -120,18 +120,18 @@
 
   @Example
     <code>
-    // Toggle RD7
+    // Toggle RE5
     DATA_Toggle();
     </code>
 
 */
-#define DATA_Toggle()           (_LATD7 ^= 1)
+#define DATA_Toggle()           (_LATE5 ^= 1)
 /**
   @Summary
-    Reads the value of the GPIO pin, RD7.
+    Reads the value of the GPIO pin, RE5.
 
   @Description
-    Reads the value of the GPIO pin, RD7.
+    Reads the value of the GPIO pin, RE5.
 
   @Preconditions
     None.
@@ -146,18 +146,18 @@
     <code>
     uint16_t portValue;
 
-    // Read RD7
+    // Read RE5
     postValue = DATA_GetValue();
     </code>
 
 */
-#define DATA_GetValue()         _RD7
+#define DATA_GetValue()         _RE5
 /**
   @Summary
-    Configures the GPIO pin, RD7, as an input.
+    Configures the GPIO pin, RE5, as an input.
 
   @Description
-    Configures the GPIO pin, RD7, as an input.
+    Configures the GPIO pin, RE5, as an input.
 
   @Preconditions
     None.
@@ -170,18 +170,18 @@
 
   @Example
     <code>
-    // Sets the RD7 as an input
+    // Sets the RE5 as an input
     DATA_SetDigitalInput();
     </code>
 
 */
-#define DATA_SetDigitalInput()  (_TRISD7 = 1)
+#define DATA_SetDigitalInput()  (_TRISE5 = 1)
 /**
   @Summary
-    Configures the GPIO pin, RD7, as an output.
+    Configures the GPIO pin, RE5, as an output.
 
   @Description
-    Configures the GPIO pin, RD7, as an output.
+    Configures the GPIO pin, RE5, as an output.
 
   @Preconditions
     None.
@@ -194,19 +194,19 @@
 
   @Example
     <code>
-    // Sets the RD7 as an output
+    // Sets the RE5 as an output
     DATA_SetDigitalOutput();
     </code>
 
 */
-#define DATA_SetDigitalOutput() (_TRISD7 = 0)
+#define DATA_SetDigitalOutput() (_TRISE5 = 0)
 
 /**
     Section: Function Prototypes
 */
 /**
   @Summary
-    Configures the pin settings of the PIC24FJ256GU406
+    Configures the pin settings of the PIC24FJ512GU410
     The peripheral pin select, PPS, configuration is also handled by this manager.
 
   @Description

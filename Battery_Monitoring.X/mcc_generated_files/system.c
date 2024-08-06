@@ -14,7 +14,7 @@
     This header file provides implementations for driver APIs for all modules selected in the GUI.
     Generation Information :
         Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.4
-        Device            :  PIC24FJ256GU406
+        Device            :  PIC24FJ512GU410
     The generated drivers are tested against the following:
         Compiler          :  XC16 v2.10
         MPLAB             :  MPLAB X v6.05
@@ -61,17 +61,17 @@
 #pragma config BSLIM = 8191    //Boot Segment Flash Page Address Limit bits->8191
 
 // FOSCSEL
-#pragma config FNOSC = PRI    //Oscillator Source Selection->Primary Oscillator (XT, HS, EC)
-#pragma config PLLMODE = DISABLED    //PLL Mode Selection->No PLL used; PLLEN bit is not available
+#pragma config FNOSC = FRC    //Oscillator Source Selection->FRC
+#pragma config PLLMODE = PLL4X    //PLL Mode Selection->4x PLL selected
 #pragma config IESO = OFF    //Two-speed Oscillator Start-up Enable bit->Start up with user-selected oscillator source
 
 // FOSC
-#pragma config POSCMD = HS    //Primary Oscillator Mode Select bits->HS Crystal Oscillator mode
+#pragma config POSCMD = XT    //Primary Oscillator Mode Select bits->XT Crystal Oscillator mode
 #pragma config OSCIOFCN = ON    //OSC2 Pin Function bit->RC15 is general purpose digital I/O pin
 #pragma config SOSCEN = OFF    //SOSC Power Selection Configuration bits->SOSC crystal driver is disabled (RC13/RC14 mode)
 #pragma config PLLSS = PRI    //PLL Secondary Selection Configuration bit->PLL is fed by the Primary oscillator
 #pragma config IOL1WAY = ON    //Peripheral pin select configuration bit->Allow only one reconfiguration
-#pragma config FCKSM = CSDCMD    //Clock Switching Mode bits->Both Clock switching and Fail-safe Clock Monitor are disabled
+#pragma config FCKSM = CSECMD    //Clock Switching Mode bits->Clock switching is enabled and Fail-safe Clock Monitor is disabled
 
 // FWDT
 #pragma config WDTPS = PS32768    //Watchdog Timer Postscaler bits->1:32768
@@ -117,15 +117,15 @@
 #include "pin_manager.h"
 #include "clock.h"
 #include "system.h"
+#include "mccp6_compare.h"
 #include "interrupt_manager.h"
 #include "traps.h"
-#include "mccp6_compare.h"
 
 void SYSTEM_Initialize(void)
 {
     PIN_MANAGER_Initialize();
-    INTERRUPT_Initialize();
     CLOCK_Initialize();
+    INTERRUPT_Initialize();
     MCCP6_COMPARE_Initialize();
 }
 

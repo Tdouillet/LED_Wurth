@@ -14,7 +14,7 @@
     This header file provides implementations for driver APIs for MCCP6. 
     Generation Information : 
         Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.4
-        Device            :  PIC24FJ256GU406
+        Device            :  PIC24FJ512GU410
     The generated drivers are tested against the following:
         Compiler          :  XC16 v2.10
         MPLAB             :  MPLAB X v6.05
@@ -85,20 +85,20 @@ void MCCP6_COMPARE_Initialize (void)
     CCP6TMRL = 0x00;
     //TMR 0; 
     CCP6TMRH = 0x00;
-    //PR 9; 
-    CCP6PRL = 0x09;
+    //PR 19; 
+    CCP6PRL = 0x13;
     //PR 0; 
     CCP6PRH = 0x00;
     //CMP 0; 
     CCP6RA = 0x00;
-    //CMP 4; 
-    CCP6RB = 0x04;
+    //CMP 6; 
+    CCP6RB = 0x06;
     //BUF 0; 
     CCP6BUFL = 0x00;
     //BUF 0; 
     CCP6BUFH = 0x00;
 
-    CCP6CON1Lbits.CCPON = 0x1; //Enabling CCP
+    CCP6CON1Lbits.CCPON = 0x0; //Enabling CCP
 
     gMCCP6Mode = CCP6CON1Lbits.MOD;
 

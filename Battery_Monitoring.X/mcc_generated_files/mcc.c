@@ -14,7 +14,7 @@
     The configuration contents of this file are moved to system.c and this file will be removed in future MCC releases. 
     Generation Information :
         Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.4
-        Device            :  PIC24FJ256GU406
+        Device            :  PIC24FJ512GU410
     The generated drivers are tested against the following:
         Compiler          :  XC16 v2.10
         MPLAB             :  MPLAB X v6.05

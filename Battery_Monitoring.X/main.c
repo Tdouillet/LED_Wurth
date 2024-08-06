@@ -54,20 +54,38 @@
 #define RED 2
 #define BLUE 3
 
+#define HI 2
+#define LO 0
+#define ONE 1
+#define ZERO 0
 /*
                          Main application
  */
 
 /******************************************************************************/
+uint8_t state = 2;
+uint8_t bit = 0;
+uint8_t count = 0;
+uint8_t selected_tab[] = {};
+uint8_t ind = 0;
+uint8_t init = 1;
 
-uint8_t red_tab[] = {0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x4,0x4,0x4,0x4,
-                     0x4,0x4,0x4,0x4,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7};
+uint32_t red = 0b000000001111111100000000;
 
-uint8_t green_tab[] = {0x4,0x4,0x4,0x4,0x4,0x4,0x4,0x4,0x7,0x7,0x7,0x7,
-                        0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7};
+uint32_t green = 0b111111110000000000000000;
 
-uint8_t blue_tab[] = {0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x4,0x4,0x4,0x4,
-                     0x4,0x4,0x4,0x4,0x7,0x7,0x7,0x7,0x7,0x7,0x7,0x7};
+uint32_t blue = 0b000000000000000011111111;
+
+uint32_t gradient = 0b1111;
+
+uint32_t battery_gradient[] = {
+    0x0DFF0D, 0x4EFF11, 0x8EFF15, 0xB7FA33, 0xB3AC34, 0xB3694C
+};
+
+uint32_t sunset_gradient[]={
+  0x15348b, 0x35729d, 0x3d9193, 0x49ae8e, 0x65f275  
+};
+
 void Delay(unsigned int msec)
 {
    while(msec > 0)
@@ -91,135 +109,160 @@ void Change_PWM(uint16_t value){
     CCP6RB=value;
 }
 
+void Write1(void){
+    DATA_SetHigh();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    DATA_SetLow();
+    Nop();
+    Nop();
+    
+}
+
+void Write0(void){
+    DATA_SetHigh();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    DATA_SetLow();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+    Nop();
+}
+
 void Reset(void){ //267us reset
-    for (uint8_t i = 0; i<210;i++){
-        CCP6RB = 0xA;
+    DATA_SetLow();
+    __delay_us(200);
+}
+
+void Color(uint32_t color){
+    
+    uint32_t color_temp = color<<8;
+    Reset();
+    for (uint8_t i = 0; i<24; i++){
+        if (color_temp&0x80000000){
+            Write1();
+        } else {
+            Write0();
+        }
+        color_temp=color_temp<<1;
+    }
+    
+}
+
+void Gradient(uint32_t color, uint8_t range){
+    uint32_t color_temp = color;
+    for (uint8_t i = 0; i<range;i++){
+        Color(color_temp);
+        Delay(100);
+        color_temp=color_temp<<1;
+    }
+    
+}
+
+void Gradient_Inverse(uint32_t color, uint8_t range){
+    uint32_t color_temp = color;
+    for (uint8_t i = 0; i<range;i++){
+        Color(color_temp);
+        Delay(100);
+        color_temp=color_temp>>1;
     }
 }
 
-void Green(void){
-    
-    Reset();
-    Change_PWM(0x4);
-    __delay_us(1);
-    Change_PWM(0x4);
-    __delay_us(1);
-    Change_PWM(0x4);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
+void Gradient_Tab(uint32_t tab[],uint32_t delay){
+    for (uint32_t i = 0; i<(sizeof(tab)/sizeof(tab[0]));i++){
+        Color(tab[i]);
+        Delay(delay);
+    }
 }
 
-void Red(void){
-    
-    Reset();
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x4);
-    __delay_us(1);
-    Change_PWM(0x4);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
+void Gradient_Inverse_Tab(uint32_t tab[],uint32_t delay){
+    for (uint32_t i = (sizeof(tab)/sizeof(tab[0]))-1; i>=0;i--){
+        Color(tab[i]);
+        Delay(delay);
+    }
 }
 
-void Blue(void){
-    
-    Reset();
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x4);
-    __delay_us(1);
-    Change_PWM(0x4);
-    __delay_us(1);
-}
-
-void Purple(void){
-    Red();
-    Blue();
-}
-
-void Yellow(void){
-    Red();
-    Red();
-    Green();
+void Smooth_Flash(uint32_t flash[],uint32_t delay){
+    Gradient_Tab(flash, delay);
+    Gradient_Inverse_Tab(flash, delay);
     
 }
 
-void Test(void){
-    uint8_t a = 0;
-    Reset();
-    Change_PWM(0x4);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Change_PWM(0x4);
-    __delay_us(1);
-    Change_PWM(0x7);
-    __delay_us(1);
-    Reset();
+void Red_Flash(uint32_t delay){
+    uint32_t color = 0x0;
+    for (uint8_t i = 0; i<0xFF;i++){
+        Color(color);
+        Delay(delay);
+        color+=0x100;
+    }
+    for (uint8_t i = 0; i<0xFF;i++){
+        Color(color);
+        Delay(delay);
+        color-=0x00000100;
+    }
+    Color(0);
+    Delay(40);
+    
 }
 
-void Orange(void){
-    Red();
-    Red();
-    Red();
-    Red();
-    Red();
-    Red();
-    Green();
+void Green_Flash(uint32_t delay){
+    uint32_t color = 0x0;
+    for (uint8_t i = 0; i<0xFF;i++){
+        Color(color);
+        Delay(delay);
+        color+=0x10000;
+    }
+    for (uint8_t i = 0; i<0xFF;i++){
+        Color(color);
+        Delay(delay);
+        color-=0x00010000;
+    }
+    Color(0);
+    Delay(40);
+    
 }
 
+void Blue_Flash(uint32_t delay){
+    uint32_t color = 0x0;
+    for (uint8_t i = 0; i<0xFF;i++){
+        Color(color);
+        Delay(delay);
+        color+=0x1;
+    }
+    for (uint8_t i = 0; i<0xFF;i++){
+        Color(color);
+        Delay(delay);
+        color-=0x1;
+    }
+    Color(0);
+    Delay(40);
+    
+}
 
 int main(void)
 {
     // initialize the device
     SYSTEM_Initialize();
-    MCCP6_COMPARE_Start();
 
     while (1)
     {
-        Blue();
-        Reset();
-        __delay_ms(2000);
-        Red();
-        Reset();
-        __delay_ms(2000);
-        Green();
-        Reset();
-        __delay_ms(2000);
+        Red_Flash(2);
+        Green_Flash(2);
+        Blue_Flash(2);
         
     }
 

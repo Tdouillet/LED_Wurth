@@ -16,7 +16,7 @@
     This source file provides implementations for PIN MANAGER.
     Generation Information :
         Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.4
-        Device            :  PIC24FJ256GU406
+        Device            :  PIC24FJ512GU410
     The generated drivers are tested against the following:
         Compiler          :  XC16 v2.10
         MPLAB 	          :  MPLAB X v6.05
@@ -61,6 +61,7 @@ void PIN_MANAGER_Initialize (void)
     /****************************************************************************
      * Setting the Output Latch SFR(s)
      ***************************************************************************/
+    LATA = 0x0000;
     LATB = 0x0000;
     LATC = 0x0000;
     LATD = 0x0000;
@@ -72,10 +73,11 @@ void PIN_MANAGER_Initialize (void)
     /****************************************************************************
      * Setting the GPIO Direction SFR(s)
      ***************************************************************************/
+    TRISA = 0xC6FF;
     TRISB = 0xFFFF;
     TRISC = 0x701E;
-    TRISD = 0x0F7F;
-    TRISE = 0x00FF;
+    TRISD = 0xFFFF;
+    TRISE = 0x03DF;
     TRISF = 0x31BF;
     TRISG = 0xF3CF;
     TRISH = 0x0001;
@@ -83,6 +85,7 @@ void PIN_MANAGER_Initialize (void)
     /****************************************************************************
      * Setting the Weak Pull Up and Weak Pull Down SFR(s)
      ***************************************************************************/
+    CNPDA = 0x0000;
     CNPDB = 0x0000;
     CNPDC = 0x0000;
     CNPDD = 0x0000;
@@ -90,6 +93,7 @@ void PIN_MANAGER_Initialize (void)
     CNPDF = 0x0000;
     CNPDG = 0x0000;
     CNPDH = 0x0000;
+    CNPUA = 0x0000;
     CNPUB = 0x0000;
     CNPUC = 0x0000;
     CNPUD = 0x0000;
@@ -97,6 +101,7 @@ void PIN_MANAGER_Initialize (void)
     CNPUF = 0x0000;
     CNPUG = 0x0000;
     CNPUH = 0x0000;
+    IOCPDA = 0x0000;
     IOCPDB = 0x0000;
     IOCPDC = 0x0000;
     IOCPDD = 0x0000;
@@ -104,6 +109,7 @@ void PIN_MANAGER_Initialize (void)
     IOCPDF = 0x0000;
     IOCPDG = 0x0000;
     IOCPDH = 0x0000;
+    IOCPUA = 0x0000;
     IOCPUB = 0x0000;
     IOCPUC = 0x0000;
     IOCPUD = 0x0000;
@@ -115,6 +121,7 @@ void PIN_MANAGER_Initialize (void)
     /****************************************************************************
      * Setting the Open Drain SFR(s)
      ***************************************************************************/
+    ODCA = 0x0000;
     ODCB = 0x0000;
     ODCC = 0x0000;
     ODCD = 0x0000;
@@ -126,8 +133,10 @@ void PIN_MANAGER_Initialize (void)
     /****************************************************************************
      * Setting the Analog/Digital Configuration SFR(s)
      ***************************************************************************/
+    ANSA = 0x00C0;
     ANSB = 0xFF3F;
-    ANSD = 0x0C40;
+    ANSC = 0x0010;
+    ANSD = 0x0CC0;
     ANSE = 0x0018;
     ANSG = 0x03C0;
     
@@ -136,7 +145,7 @@ void PIN_MANAGER_Initialize (void)
      ***************************************************************************/
     __builtin_write_OSCCONL(OSCCON & 0xbf); // unlock PPS
 
-    //RPOR16bits.RP33R = 0x0014;    //RD7->MCCP6:OCM6A
+    RPOR17bits.RP34R = 0x0014;    //RE5->MCCP6:OCM6A
 
     __builtin_write_OSCCONL(OSCCON | 0x40); // lock PPS
 }
